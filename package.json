@@ -8,10 +8,10 @@
     "build": "tsc",
     "dev": "tsx watch src/server.ts",
     "lint": "eslint ./src/**/*",
-    "generate":"prisma generate",
-    "studio":"prisma studio",
-    "push":"prisma db push",
-    "pull":"prisma db pull",
+    "generate": "prisma generate",
+    "studio": "prisma studio",
+    "push": "prisma db push",
+    "pull": "prisma db pull",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -23,12 +23,16 @@
   "license": "ISC",
   "type": "module",
   "bugs": {
-    "url": "https://github.com/Rishad1404/PH-Healthcare-backend/issues" 
+    "url": "https://github.com/Rishad1404/PH-Healthcare-backend/issues"
   },
   "homepage": "https://github.com/Rishad1404/PH-Healthcare-backend#readme",
   "dependencies": {
+    "@prisma/adapter-pg": "^7.3.0",
+    "@prisma/client": "^7.3.0",
+    "better-auth": "^1.4.18",
     "dotenv": "^17.2.4",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "prisma": "^7.3.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
