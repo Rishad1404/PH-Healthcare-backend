@@ -8,7 +8,7 @@ const registerPatient = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body;
   const result = await AuthService.registerPatient(payload);
   sendResponse(res, {
-    httpStatusCode: 201,
+    httpStatusCode: status.CREATED,
     success: true,
     message: "Patient registered successfully",
     data: result,
