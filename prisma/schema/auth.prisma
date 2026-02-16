@@ -1,5 +1,3 @@
-
-
 model User {
     id                 String     @id
     name               String
@@ -16,10 +14,11 @@ model User {
     sessions           Session[]
     accounts           Account[]
     patient            Patient?
+    doctor             Doctor?
+    admin              Admin?
 
     @@unique([email])
     @@map("user")
-    doctors Doctor[]
 }
 
 model Session {
