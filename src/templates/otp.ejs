@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OTP Verification</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f0f4f8; padding: 40px 16px; margin: 0; }
+    .wrapper { max-width: 560px; margin: 0 auto; }
+
+    .header {
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      border-radius: 16px 16px 0 0;
+      padding: 32px 40px;
+      text-align: center;
+    }
+    .logo { font-size: 22px; font-weight: 700; color: #fff; letter-spacing: -0.3px; }
+    .logo span { font-weight: 400; opacity: 0.85; }
+
+    .card {
+      background: #fff;
+      padding: 44px 40px;
+      border-left: 1px solid #e2e8f0;
+      border-right: 1px solid #e2e8f0;
+    }
+    .greeting { font-size: 22px; font-weight: 700; color: #1a202c; margin: 0 0 12px 0; }
+    .greeting span { color: #4f46e5; }
+    .subtext { font-size: 15px; color: #64748b; line-height: 1.7; margin: 0 0 32px 0; }
+
+    .label {
+      font-size: 11px; font-weight: 600; letter-spacing: 1.2px;
+      text-transform: uppercase; color: #94a3b8; margin: 0 0 12px 0;
+    }
+    .otp-box {
+      background: linear-gradient(135deg, #f8f7ff, #eef2ff);
+      border: 2px dashed #c7d2fe;
+      border-radius: 12px;
+      padding: 28px;
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .otp-code { font-size: 44px; font-weight: 700; letter-spacing: 12px; color: #4f46e5; margin: 0; }
+    .otp-expiry { margin-top: 10px; font-size: 13px; color: #94a3b8; }
+
+    .divider { border: none; border-top: 1px solid #e2e8f0; margin: 28px 0; }
+
+    .warning {
+      background: #fffbeb; border: 1px solid #fde68a;
+      border-radius: 10px; padding: 16px;
+      font-size: 13px; color: #92400e; line-height: 1.6; margin-bottom: 24px;
+    }
+    .support { font-size: 13px; color: #94a3b8; line-height: 1.6; margin: 0; }
+    .support a { color: #4f46e5; text-decoration: none; font-weight: 500; }
+
+    .footer {
+      background: #f8fafc; border: 1px solid #e2e8f0; border-top: none;
+      border-radius: 0 0 16px 16px; padding: 24px 40px; text-align: center;
+    }
+    .footer-text { font-size: 12px; color: #94a3b8; line-height: 1.7; margin: 0; }
+    .footer-text a { color: #64748b; }
+    .footer-brand { font-size: 12px; color: #cbd5e1; margin: 6px 0 0 0; }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="header">
+    <div class="logo">PH <span>Healthcare</span></div>
+  </div>
+
+  <div class="card">
+    <p class="greeting">Hello, <span><%= name %> &#128075;</span></p>
+    <p class="subtext">
+      We received a request to verify your identity. Use the one-time password
+      below to complete the process. This code is valid for <strong>2 minutes</strong>.
+    </p>
+
+    <p class="label">Your one-time password</p>
+    <div class="otp-box">
+      <p class="otp-code"><%= otp %></p>
+      <p class="otp-expiry">&#9203; Expires in 2 minutes</p>
+    </div>
+
+    <hr class="divider"/>
+
+    <div class="warning">
+      &#9888;&#65039; <strong>Never share this code with anyone.</strong>
+      Our team will never ask for your OTP. If you did not request this,
+      please ignore this email or contact support immediately.
+    </div>
+
+    <p class="support">
+      Need help? Reach out to us at
+      <a href="mailto:support@phhealthcare.com">support@phhealthcare.com</a>
+      and we will get back to you as soon as possible.
+    </p>
+  </div>
+
+  <div class="footer">
+    <p class="footer-text">
+      You are receiving this because a sign-in was attempted for your account.<br/>
+      <a href="#">Unsubscribe</a> &middot;
+      <a href="#">Privacy Policy</a> &middot;
+      <a href="#">Terms of Service</a>
+    </p>
+    <p class="footer-brand">&copy; <%= new Date().getFullYear() %> PH Healthcare. All rights reserved.</p>
+  </div>
+
+</div>
+</body>
+</html>

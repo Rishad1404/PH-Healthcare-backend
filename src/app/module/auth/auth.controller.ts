@@ -5,6 +5,7 @@ import { sendResponse } from "../../shared/sendResponse";
 import status from "http-status";
 import { tokenUtils } from "../../utils/token";
 import AppError from "../../errorHelpers/AppError";
+import { CookieUtils } from "../../utils/cookie";
 
 const registerPatient = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body;
@@ -98,10 +99,48 @@ const changePassword = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const logOutUser=catchAsync(async (req: Request, res: Response) => {
+  const betterAuthSessionToken = req.cookies["better-auth.session_token"];
+  const result = await AuthService.logOutUser(betterAuthSessionToken);
+  CookieUtils.clearCookie(res,"better-auth.session_token",{
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  });
+  CookieUtils.clearCookie(res,"refreshToken",{
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  })
+  CookieUtils.clearCookie(res,"accessToken",{
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  })
+  sendResponse(res, {
+    httpStatusCode: status.OK,
+    success: true,
+    message: "User logged out successfully",
+    data: result,
+  });
+});
+
+const verifyEmail = catchAsync(async (req: Request, res: Response) => {
+  const { email, otp } = req.body;
+  await AuthService.verifyEmail(email, otp);
+  sendResponse(res, {
+    httpStatusCode: status.OK,
+    success: true,
+    message: "Email verified successfully"
+  });
+});
+
 export const AuthController = {
   registerPatient,
   loginUser,
   getMe,
   getNewToken,
-  changePassword
+  changePassword,
+  logOutUser,
+  verifyEmail
 };
