@@ -29,7 +29,7 @@ const setAccessTokenCookie=(res:Response,token:string)=>{
         secure:true,
         sameSite:"none",
         // 1 day
-        maxAge:60*60*60*24
+        maxAge:60*60*24*1000
     })
 }
 
@@ -41,7 +41,7 @@ const setRefreshTokenCookie=(res:Response,token:string)=>{
         sameSite:"none",
         path:"/",
         // 7 day
-        maxAge:60*60*60*24*7
+        maxAge:60*60*24*1000*7
     })
 }
 
@@ -53,7 +53,7 @@ const betterAuthSessionCookie=(res:Response,token:string)=>{
         sameSite:"none",
         path:"/",
         // 1 day
-        maxAge:60*60*60*24
+        maxAge:60*60*24*1000
     })
 }
 

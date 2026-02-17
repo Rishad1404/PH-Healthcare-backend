@@ -50,31 +50,38 @@ export const checkAuth =
             res.setHeader("X-Time-Remaining", timeRemaining.toString());
 
             console.log("session expiring soon");
-
-            if (
-              user.status === UserStatus.BLOCKED ||
-              user.status === UserStatus.DELETED
-            ) {
-              throw new AppError(
-                status.UNAUTHORIZED,
-                "Unauthorized access! User is not active",
-              );
-            }
-
-            if (user.isDeleted) {
-              throw new AppError(
-                status.UNAUTHORIZED,
-                "Unauthorized access! User is deleted",
-              );
-            }
-
-            if (authRoles.length > 0 && !authRoles.includes(user.role)) {
-              throw new AppError(
-                status.FORBIDDEN,
-                "Forbidden access! You do not have permission to access this resource",
-              );
-            }
           }
+
+          // check if the user is active
+          if (
+            user.status === UserStatus.BLOCKED ||
+            user.status === UserStatus.DELETED
+          ) {
+            throw new AppError(
+              status.UNAUTHORIZED,
+              "Unauthorized access! User is not active",
+            );
+          }
+
+          if (user.isDeleted) {
+            throw new AppError(
+              status.UNAUTHORIZED,
+              "Unauthorized access! User is deleted",
+            );
+          }
+
+          if (authRoles.length > 0 && !authRoles.includes(user.role)) {
+            throw new AppError(
+              status.FORBIDDEN,
+              "Forbidden access! You do not have permission to access this resource",
+            );
+          }
+          req.user={
+            userId: user.id,
+            role: user.role,
+            email: user.email,
+          }
+
         }
 
         const accessToken = CookieUtils.getCookie(req, "accessToken");
