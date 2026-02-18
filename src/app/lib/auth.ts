@@ -4,16 +4,36 @@ import { prisma } from "./prisma";
 import { Role, UserStatus } from "../../generated/prisma/enums";
 import { bearer, emailOTP } from "better-auth/plugins";
 import { sendEmail } from "../utils/email";
+import { envVars } from "../../config/env";
 
 
 
 export const auth = betterAuth({
+    baseUrl:envVars.BETTER_AUTH_URL,
+    secret:envVars.BETTER_AUTH_SECRET,
     database: prismaAdapter(prisma, {
         provider: "postgresql",
     }),
     emailAndPassword: {
         enabled: true,
         requireEmailVerification: true
+    },
+
+    socialProviders:{
+        google:{
+            clientId:envVars.GOOGLE_CLIENT_ID,
+            clientSecret:envVars.GOOGLE_CLIENT_SECRET,
+            mapProfileToUser:()=>{
+                return{
+                    role:Role.PATIENT,
+                    status:UserStatus.ACTIVE,
+                    needPasswordChange:false,
+                    emailVerified:false,
+                    isDeleted:false,
+                    deletedAt:null
+                }
+            }
+        }
     },
 
     emailVerification: {
@@ -108,10 +128,33 @@ export const auth = betterAuth({
         }
     },
 
+    redirectURLs:{
+        signIn:`${envVars.BETTER_AUTH_URL}/api/v1/auth/google/success`,
+    },
 
 
-    trustedOrigins: [process.env.BETTER_AUTH_URL || "http://localhost:5000"],
+
+    trustedOrigins: [process.env.BETTER_AUTH_URL || "http://localhost:5000",envVars.FRONTEND_URL],
     advanced:{
-        disableCSRFCheck:true
+        // disableCSRFCheck:true
+        useSecureCookies:false,
+        cookies:{
+            state:{ 
+                attributes:{
+                    sameSite:"none",
+                    secure:true,
+                    httpOnly:true,
+                    path:"/",
+                }
+            },
+            sessionToken:{
+                attributes:{
+                    sameSite:"none",
+                    secure:true,
+                    httpOnly:true,
+                    path:"/",
+                }
+            }
+        }
     }
 });
