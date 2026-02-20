@@ -28,7 +28,7 @@ export interface PrismaCountArgs {
 export interface PrismaModelDelegate {
     findMany(args ?: any) : Promise<any[]>;
     count (args ?: any) : Promise<number>;
-}
+}  
 
 export interface IQueryParams {
     searchTerm ?: string;
@@ -88,3 +88,11 @@ export interface IQueryResult<T>{
         totalPages : number;
     }
 }
+
+
+
+
+
+
+
+
