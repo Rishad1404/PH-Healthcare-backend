@@ -10,6 +10,7 @@ import path from "path";
 import cors from "cors";
 import { envVars } from "./config/env";
 import qs from "qs";
+import { PaymentController } from "./app/module/payment/payment.controller";
 
 const app: Application = express();
 app.set("query parser", (str: string) => {
@@ -18,6 +19,8 @@ app.set("query parser", (str: string) => {
 
 app.set("view engine", "ejs");
 app.set("views", path.resolve(process.cwd(), `src/templates`));
+
+app.post("/webhook",express.raw({type: 'application/json'}),PaymentController.handleStripeHookEvent);
 
 app.use(
   cors({
