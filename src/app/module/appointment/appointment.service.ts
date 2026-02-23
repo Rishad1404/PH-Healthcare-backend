@@ -1,5 +1,6 @@
 /* eslint-disable no-useless-assignment */
-import { uuidv7 } from "zod/mini"
+// import { uuidv7 } from "zod/mini"
+import {v7 as uuidv7} from "uuid"
 import { IRequestUser } from "../../interfaces/requestUser.interface"
 import { prisma } from "../../lib/prisma"
 import { IBookAppointmentPayload } from "./appointment.interface"
@@ -85,7 +86,7 @@ const bookAppointment=async(payload:IBookAppointmentPayload,user:IRequestUser)=>
                     product_data:{
                         name:`Appointment with Dr. ${doctorData.name}`,
                     },
-                    unit_amount:doctorData.appointmentFee*120,
+                    unit_amount:doctorData.appointmentFee*100,
                 },
                 quantity:1
             }],
@@ -374,7 +375,7 @@ const initiatePayment=async(appointmentId:string,user:IRequestUser)=>{
                 product_data:{
                     name:`Appointment with Dr. ${appointmentData.doctor.name}`,
                 },
-                unit_amount:appointmentData.doctor.appointmentFee*120
+                unit_amount:appointmentData.doctor.appointmentFee*100
             },
             quantity:1
         }],
@@ -384,8 +385,8 @@ const initiatePayment=async(appointmentId:string,user:IRequestUser)=>{
             paymentId:appointmentData.payment?.id
         },
 
-        success_url:`${envVars.FRONTEND_URL}/dashboard/payment/payment-success`,
-        cancel_url:`${envVars.FRONTEND_URL}/dashboard/appointments`,
+        success_url:`${envVars.FRONTEND_URL}/dashboard/payment/payment-success?appointment_id=${appointmentData.id}&payment_id=${appointmentData.payment?.id}`,
+        cancel_url:`${envVars.FRONTEND_URL}/dashboard/appointments?error=payment_cancelled`,
     })
     return {
         paymentUrl:session.url

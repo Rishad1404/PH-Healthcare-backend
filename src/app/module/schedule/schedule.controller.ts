@@ -7,12 +7,12 @@ import { IQueryParams } from "../../interfaces/query.interface";
 
 const createSchedule=catchAsync(async(req:Request,res:Response)=>{
     const payload=req.body;
-    const createSchedule= ScheduleService.createSchedule(payload);
+    const result=await ScheduleService.createSchedule(payload);
     sendResponse(res,{
         httpStatusCode:status.CREATED,
         success: true,
         message: "Schedule created successfully",
-        data: createSchedule
+        data:result
     })
 })
 
@@ -53,12 +53,11 @@ const updateSchedule=catchAsync(async(req:Request,res:Response)=>{
 
 const deleteSchedule=catchAsync(async(req:Request,res:Response)=>{
     const {id}=req.params;
-    const deleteSchedule=await ScheduleService.deleteSchedule(id as string);
+    await ScheduleService.deleteSchedule(id as string);
     sendResponse(res,{
         httpStatusCode:status.OK,
         success: true,
         message: "Schedule deleted successfully",
-        data: deleteSchedule
     })
 })
 
