@@ -5,9 +5,10 @@ import catchAsync from "../../shared/catchAsync";
 import { envVars } from "../../../config/env";
 import status from "http-status";
 import { stripe } from "../../../config/stripe.config";
-import { paymentService } from "./payment.service";
+
 import { sendResponse } from "../../shared/sendResponse";
 import { send } from "node:process";
+import { PaymentService } from "./payment.service";
 
 const handleStripeHookEvent=catchAsync(async(req:Request,res:Response)=>{
     const signature=req.headers['stripe-signature'] as string;
@@ -28,7 +29,7 @@ const handleStripeHookEvent=catchAsync(async(req:Request,res:Response)=>{
     }
 
     try {
-        const result=await paymentService.handleStripeHookEvent(event as any);
+        const result=await PaymentService.handlerStripeWebhookEvent(event as any);
         sendResponse(res,{
             httpStatusCode:status.OK,
             success:true,

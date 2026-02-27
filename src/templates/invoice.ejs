@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment Invoice - PH Healthcare</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2c3e50;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 8px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+            font-weight: 300;
+            letter-spacing: 0.3px;
+        }
+
+        .content {
+            padding: 45px 40px;
+        }
+
+        .greeting {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #2c3e50;
+        }
+
+        .intro-text {
+            margin-bottom: 30px;
+            color: #555;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #f5f7fa 0%, #f0f3f7 100%);
+            border-left: 5px solid #2a5298;
+            padding: 22px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            font-size: 14px;
+            align-items: center;
+        }
+
+        .info-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #2c3e50;
+            min-width: 140px;
+        }
+
+        .info-value {
+            color: #555;
+            text-align: right;
+            flex: 1;
+        }
+
+        .status-paid {
+            color: #27ae60;
+            font-weight: 700;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #1e3c72;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 30px;
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #2a5298;
+            display: inline-block;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .details-box {
+            background: linear-gradient(135deg, #f5f7fa 0%, #f0f3f7 100%);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #2a5298;
+        }
+
+        .details-box p {
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: #7f8c8d;
+        }
+
+        .details-box .label {
+            font-weight: 700;
+            color: #2a5298;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .details-box strong {
+            display: block;
+            font-size: 15px;
+            color: #2c3e50;
+            margin-top: 4px;
+        }
+
+        .summary-box {
+            background: linear-gradient(135deg, #f5f7fa 0%, #f0f3f7 100%);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #2a5298;
+            margin-bottom: 20px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .summary-row strong {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .amount-box {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 35px;
+            border-radius: 8px;
+            margin: 30px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .amount-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .amount-label {
+            font-size: 13px;
+            opacity: 0.9;
+            margin-bottom: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .amount-value {
+            font-size: 42px;
+            font-weight: 700;
+            position: relative;
+            z-index: 2;
+        }
+
+        .payment-status {
+            background: linear-gradient(135deg, #d4edda 0%, #c8e6c9 100%);
+            border: 1px solid #81c784;
+            color: #1b5e20;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 25px 0;
+            text-align: center;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 0.3px;
+        }
+
+        .download-section {
+            text-align: center;
+            margin: 30px 0;
+            padding-top: 25px;
+            border-top: 1px solid #e8eef5;
+        }
+
+        .download-text {
+            margin-bottom: 16px;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .download-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+            color: white;
+            padding: 13px 36px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            font-size: 13px;
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+            letter-spacing: 0.3px;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 152, 0, 0.4);
+        }
+
+        .additional-info {
+            background: linear-gradient(135deg, #f5f7fa 0%, #f0f3f7 100%);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #2a5298;
+            margin: 25px 0;
+        }
+
+        .additional-info p {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 12px;
+        }
+
+        .additional-info p:last-child {
+            margin-bottom: 0;
+        }
+
+        .additional-info strong {
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        .footer {
+            background-color: #f5f7fa;
+            padding: 30px 40px;
+            text-align: center;
+            border-top: 1px solid #e8eef5;
+        }
+
+        .footer-brand {
+            font-weight: 700;
+            color: #2c3e50;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .footer-tagline {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-bottom: 16px;
+        }
+
+        .footer-links {
+            font-size: 11px;
+            color: #7f8c8d;
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: #2a5298;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #1e3c72;
+            text-decoration: underline;
+        }
+
+        .footer-copyright {
+            font-size: 10px;
+            color: #95a5a6;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #e8eef5;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                border-radius: 0;
+            }
+
+            .header {
+                padding: 40px 20px;
+            }
+
+            .content,
+            .footer {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-row,
+            .summary-row {
+                flex-direction: column;
+            }
+
+            .info-value,
+            .summary-row span:last-child {
+                text-align: left;
+                margin-top: 4px;
+            }
+
+            .amount-value {
+                font-size: 32px;
+            }
+
+            .header h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <h1>INVOICE</h1>
+                <p>Your Healthcare Payment Receipt</p>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <div class="greeting">
+                Hello <%= patientName %>,
+            </div>
+
+            <p class="intro-text">
+                Your payment for your consultation appointment has been successfully processed. Below is your payment invoice.
+            </p>
+
+            <!-- Invoice Details -->
+            <div class="info-box">
+                <div class="info-row">
+                    <span class="info-label">Invoice ID:</span>
+                    <span class="info-value"><strong><%= invoiceId %></strong></span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Transaction ID:</span>
+                    <span class="info-value"><%= transactionId %></span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Payment Status:</span>
+                    <span class="info-value status-paid">✓ PAID</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Payment Date:</span>
+                    <span class="info-value"><%= paymentDate %></span>
+                </div>
+            </div>
+
+            <!-- Doctor & Appointment Info -->
+            <div class="section-title">Consultation Details</div>
+            <div class="details-grid">
+                <div class="details-box">
+                    <div class="label">Doctor</div>
+                    <strong><%= doctorName %></strong>
+                </div>
+                <div class="details-box">
+                    <div class="label">Appointment Date</div>
+                    <strong><%= appointmentDate %></strong>
+                </div>
+            </div>
+
+            <!-- Amount Section -->
+            <div class="section-title">Payment Summary</div>
+            
+            <div class="summary-box">
+                <div class="summary-row">
+                    <span>Consultation Fee:</span>
+                    <span><strong><%= amount.toFixed(2) %> BDT</strong></span>
+                </div>
+            </div>
+
+            <div class="amount-box">
+                <div class="amount-label">TOTAL AMOUNT PAID</div>
+                <div class="amount-value"><%= amount.toFixed(2) %> BDT</div>
+            </div>
+
+            <div class="payment-status">
+                ✓ PAYMENT CONFIRMED
+            </div>
+
+            <!-- Download Invoice -->
+            <div class="download-section">
+                <p class="download-text">
+                    Your invoice PDF is attached to this email for your records.
+                </p>
+                <% if (invoiceUrl) { %>
+                    <a href="<%= invoiceUrl %>?fl_attachment" class="download-btn" download="invoice.pdf">Download Invoice PDF</a>
+                <% } %>
+            </div>
+
+            <!-- Additional Info -->
+            <div class="additional-info">
+                <p>
+                    <strong>Next Steps:</strong><br>
+                    Your appointment has been confirmed. Please log in to your dashboard to view appointment details and prepare for your consultation.
+                </p>
+                <p>
+                    If you have any questions regarding this payment or need assistance, please don't hesitate to contact our support team.
+                </p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-brand">PH HEALTHCARE</div>
+            <div class="footer-tagline">Your Health, Our Priority</div>
+            <div class="footer-links">
+                <a href="https://ph-healthcare.com">Visit Our Website</a> | 
+                <a href="mailto:support@ph-healthcare.com">Contact Support</a>
+            </div>
+            <div class="footer-copyright">
+                © 2026 PH Healthcare Services. All rights reserved.<br>
+                This is an automatically generated email. Please do not reply directly to this email.
+            </div>
+        </div>
+    </div>
+</body>
+</html>
