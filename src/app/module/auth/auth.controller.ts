@@ -25,9 +25,15 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthService.loginUser(payload);
   const { accessToken, refreshToken, token, ...rest } = result;
 
+
   tokenUtils.setAccessTokenCookie(res, accessToken);
   tokenUtils.setRefreshTokenCookie(res, refreshToken);
-  tokenUtils.betterAuthSessionCookie(res, token);
+  // only set session cookie when token is present
+  if (token) {
+    tokenUtils.betterAuthSessionCookie(res, token as string);
+  } else {
+    console.log('loginUser - no session token returned by auth service; skipping session cookie set');
+  }
 
   sendResponse(res, {
     httpStatusCode: status.OK,
@@ -54,10 +60,14 @@ const getMe = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getNewToken = catchAsync(async (req: Request, res: Response) => {
+  console.log('getNewToken - incoming cookies:', req.cookies);
   const refreshToken = req.cookies.refreshToken;
   const betterAuthSessionToken = req.cookies["better-auth.session_token"];
   if (!refreshToken) {
     throw new AppError(status.UNAUTHORIZED, "Refresh token is missing");
+  }
+  if (!betterAuthSessionToken) {
+    throw new AppError(status.UNAUTHORIZED, "Session token is missing from cookies");
   }
   const result = await AuthService.getNewToken(
     refreshToken,
@@ -106,18 +116,18 @@ const logOutUser = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthService.logOutUser(betterAuthSessionToken);
   CookieUtils.clearCookie(res, "better-auth.session_token", {
     httpOnly: true,
-    secure: true,
-    sameSite: "none",
+    secure: envVars.NODE_ENV === "production",
+    sameSite: envVars.NODE_ENV === "production" ? "none" : "lax",
   });
   CookieUtils.clearCookie(res, "refreshToken", {
     httpOnly: true,
-    secure: true,
-    sameSite: "none",
+    secure: envVars.NODE_ENV === "production",
+    sameSite: envVars.NODE_ENV === "production" ? "none" : "lax",
   });
   CookieUtils.clearCookie(res, "accessToken", {
     httpOnly: true,
-    secure: true,
-    sameSite: "none",
+    secure: envVars.NODE_ENV === "production",
+    sameSite: envVars.NODE_ENV === "production" ? "none" : "lax",
   });
   sendResponse(res, {
     httpStatusCode: status.OK,

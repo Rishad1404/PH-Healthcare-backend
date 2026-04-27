@@ -192,7 +192,7 @@ const getNewToken = async (refreshToken: string, sessionToken: string) => {
   const data = verifiedRefreshToken.data as JwtPayload;
 
   const newAccessToken = tokenUtils.getAccessToken({
-    userId: data.user.id,
+    userId: data.userId,
     role: data.role,
     name: data.name,
     email: data.email,
@@ -346,6 +346,7 @@ const forgetPassword = async (email: string) => {
   });
 };
 
+
 const resetPassword = async (
   email: string,
   otp: string,
@@ -390,6 +391,7 @@ const resetPassword = async (
   });
 };
 
+
 const googleLoginSuccess = async (session : Record<string, any>) =>{
     const isPatientExists = await prisma.patient.findUnique({
         where : {
@@ -425,6 +427,8 @@ const googleLoginSuccess = async (session : Record<string, any>) =>{
         refreshToken,
     }
 }
+
+
 export const AuthService = {
   registerPatient,
   loginUser,

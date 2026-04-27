@@ -22,7 +22,7 @@ router.patch(
   checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
   SpecialtyController.updateSpecialty,
 );
-router.get("/", checkAuth(Role.PATIENT), SpecialtyController.getAllSpecialties);
+router.get("/", SpecialtyController.getAllSpecialties);
 router.delete(
   "/:id",
   checkAuth(Role.ADMIN, Role.SUPER_ADMIN),

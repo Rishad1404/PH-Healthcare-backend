@@ -44,8 +44,8 @@ export const uploadFileToCloudinary = async (
     cloudinary.uploader
       .upload_stream(
         {
-          folder: `ph-healthcare/${folder}`,
-          public_id: `ph-healthcare/${folder}/${uniqueName}`,
+          folder: `scholar-track/${folder}`,
+          public_id: `scholar-track/${folder}/${uniqueName}`,
           resource_type: "auto",
         },
         (error, result) => {

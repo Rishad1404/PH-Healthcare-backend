@@ -8,6 +8,10 @@ const router=Router()
 
 router.post("/register",AuthController.registerPatient)
 router.post("/login",AuthController.loginUser)
+// temporary debug route to inspect cookies sent by the browser
+router.get("/debug-cookies", (req, res) => {
+	res.status(200).json({ cookies: req.cookies });
+});
 router.get("/me",checkAuth(Role.ADMIN,Role.SUPER_ADMIN,Role.DOCTOR,Role.PATIENT),AuthController.getMe)
 router.post("/refresh-token",AuthController.getNewToken)
 router.post("/change-password",checkAuth(Role.PATIENT,Role.DOCTOR,Role.ADMIN,Role.SUPER_ADMIN),AuthController.changePassword)

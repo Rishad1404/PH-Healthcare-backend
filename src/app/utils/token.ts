@@ -24,37 +24,39 @@ const getRefreshToken = (payload: JwtPayload) => {
 
 
 const setAccessTokenCookie=(res:Response,token:string)=>{
-    CookieUtils.setCookie(res,"accessToken",token,{
-        httpOnly:true,
-        secure:true,
-        sameSite:"none",
-        // 1 day
-        maxAge:60*60*24*1000
-    })
+  CookieUtils.setCookie(res,"accessToken",token,{
+    httpOnly:true,
+    // secure only in production (localhost/http won't accept secure cookies)
+    secure: envVars.NODE_ENV === "production",
+    // use SameSite=None only in production when secure is true; use lax in dev
+    sameSite: envVars.NODE_ENV === "production" ? "none" : "lax",
+    // 1 day
+    maxAge:60*60*24*1000
+  })
 }
 
 
 const setRefreshTokenCookie=(res:Response,token:string)=>{
-    CookieUtils.setCookie(res,"refreshToken",token,{
-        httpOnly:true,
-        secure:true,
-        sameSite:"none",
-        path:"/",
-        // 7 day
-        maxAge:60*60*24*1000*7
-    })
+  CookieUtils.setCookie(res,"refreshToken",token,{
+    httpOnly:true,
+    secure: envVars.NODE_ENV === "production",
+    sameSite: envVars.NODE_ENV === "production" ? "none" : "lax",
+    path:"/",
+    // 7 day
+    maxAge:60*60*24*1000*7
+  })
 }
 
 
 const betterAuthSessionCookie=(res:Response,token:string)=>{
-    CookieUtils.setCookie(res,"better-auth.session_token",token,{
-        httpOnly:true,
-        secure:true,
-        sameSite:"none",
-        path:"/",
-        // 1 day
-        maxAge:60*60*24*1000
-    })
+  CookieUtils.setCookie(res,"better-auth.session_token",token,{
+    httpOnly:true,
+    secure: envVars.NODE_ENV === "production",
+    sameSite: envVars.NODE_ENV === "production" ? "none" : "lax",
+    path:"/",
+    // 1 day
+    maxAge:60*60*24*1000
+  })
 }
 
 
